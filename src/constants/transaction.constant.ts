@@ -1,1 +1,1 @@
-const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/price';
+export const CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com/data/price';
