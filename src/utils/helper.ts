@@ -56,35 +56,70 @@ export const getPortfolioValue = (
   exchangeRates: ExchangeRate,
   date?: number,
   token?: string,
-): { [key: string]: number } => {
-  const portfolio: { [key: string]: number } = {};
-  transactions.forEach((transaction) => {
-    if (date && transaction.timestamp > date) {
-      // Skip transactions that occurred after the specified date
-      return;
-    }
-    if (token && transaction.token !== token) {
-      // Skip transactions that are not for the specified token
-      return;
-    }
+): { [token: string]: number } => {
+//   const portfolio: { [key: string]: number } = {};
+//   transactions.forEach((transaction) => {
+//     if (date && transaction.timestamp > date) {
+//       // Skip transactions that occurred after the specified date
+//       return;
+//     }
+//     if (token && transaction.token !== token) {
+//       // Skip transactions that are not for the specified token
+//       return;
+//     }
 
+//     if (!portfolio[transaction.token]) {
+//       portfolio[transaction.token] = 0;
+//     }
+//  if (transaction.transactionType === TransactionType.DEPOSIT) {
+//       portfolio[transaction.token] += transaction.amount;
+//     } else if (transaction.transactionType === TransactionType.WITHDRAWAL) {
+//       portfolio[transaction.token] -= transaction.amount;
+//     }
+//   });
+
+//   // Convert the portfolio balances to USD using the exchange rates
+//   Object.keys(portfolio).forEach((token) => {
+//     portfolio[token] = portfolio[token] * exchangeRates[token];
+//   });
+
+//   return portfolio;
+
+const filteredTransactions = transactions.filter((transaction) => {
+    if (!date && !token) {
+      return true;
+    }
+    if (date && !token) {
+      return transaction.timestamp <= date;
+    }
+    if (!date && token) {
+      return transaction.token === token;
+    }
+    return (date !== undefined && transaction.timestamp <= date) && transaction.token === token;
+  });
+
+  const portfolio: { [token: string]: number } = {};
+  for (const transaction of filteredTransactions) {
     if (!portfolio[transaction.token]) {
       portfolio[transaction.token] = 0;
     }
- if (transaction.transactionType === TransactionType.DEPOSIT) {
+    if (transaction.transactionType === TransactionType.DEPOSIT) {
       portfolio[transaction.token] += transaction.amount;
-    } else if (transaction.transactionType === TransactionType.WITHDRAWAL) {
+    } else {
       portfolio[transaction.token] -= transaction.amount;
     }
-  });
+  }
 
-  // Convert the portfolio balances to USD using the exchange rates
-  Object.keys(portfolio).forEach((token) => {
-    portfolio[token] = portfolio[token] * exchangeRates[token];
-  });
+  for (const token of Object.keys(portfolio)) {
+    portfolio[token] *= exchangeRates[token];
+  }
 
   return portfolio;
 };
+
+
+
+
 
 
 
