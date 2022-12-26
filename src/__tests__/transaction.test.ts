@@ -1,4 +1,5 @@
 import { getExchangeRates, getTransactionsFromCSV, getPortfolioValue } from '../utils/helper';
+import { TransactionType } from '../enums/transaction.enum';
 
 describe('getExchangeRates', () => {
   it('should return the exchange rates for the given tokens', async () => {
