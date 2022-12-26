@@ -1,6 +1,4 @@
 import * as fs from 'fs'
-import { TransactionType } from './enums/transaction.enum'
-import { Transaction } from './interfaces/transaction.interface'
 import {
   getExchangeRates,
   getTransactionsFromCSV,
