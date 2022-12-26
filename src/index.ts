@@ -7,7 +7,7 @@ import {
 
 async function main() {
   const args = process.argv.slice(2)
-  const csv = fs.readFileSync(__dirname + './data/transactions.csv', 'utf-8')
+  const csv = fs.readFileSync(__dirname + '/data/transactions.csv', 'utf-8')
   const transactions = getTransactionsFromCSV(csv)
   const tokens = Array.from(new Set(transactions.map((t) => t.token)))
   const exchangeRates = await getExchangeRates(tokens)

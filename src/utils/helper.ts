@@ -98,6 +98,8 @@ const filteredTransactions = transactions.filter((transaction) => {
     return (date !== undefined && transaction.timestamp <= date) && transaction.token === token;
   });
 
+  console.log('filteredTransactions:', filteredTransactions);
+
   const portfolio: { [token: string]: number } = {};
   for (const transaction of filteredTransactions) {
     if (!portfolio[transaction.token]) {
@@ -109,6 +111,9 @@ const filteredTransactions = transactions.filter((transaction) => {
       portfolio[transaction.token] -= transaction.amount;
     }
   }
+
+  console.log('portfolio:', portfolio);
+
 
   for (const token of Object.keys(portfolio)) {
     portfolio[token] *= exchangeRates[token];
