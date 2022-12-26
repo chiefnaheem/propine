@@ -7,7 +7,9 @@ This command line program tracks the value of a cryptocurrency portfolio based o
 ## Installation
 
 Clone this repository to your local machine
-Bring in the CSV file into the project directory and replace the transactions.csv in the path 'src/data/transactions.csv' with it. The file seems too large to be contained in this work repository.
+
+Bring in the CSV file into the project directory and replace the transactions.csv in the path 'src/data/transactions.csv' with it. The file seems too large to be contained in this work repository. Advisable to make the file name `transactions.csv` so that it works with the file directory in the project
+
 Navigate to the project directory and run
 
 ```bash
