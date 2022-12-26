@@ -19,3 +19,15 @@ describe('getTransactionsFromCSV', () => {
     ]);
   });
 });
+
+describe('getPortfolioValue', () => {
+  it('should return the portfolio value in USD for the given transactions and exchange rates', () => {
+    const transactions = [
+      { timestamp: 1234567890, transactionType: TransactionType.DEPOSIT, token: 'BTC', amount: 1 },
+      { timestamp: 1234567891, transactionType: TransactionType.WITHDRAWAL, token: 'ETH', amount: 2 },
+    ];
+    const exchangeRates = { BTC: 123.45, ETH: 67.89 };
+const portfolio = getPortfolioValue(transactions, exchangeRates);
+expect(portfolio).toEqual({ BTC: 123.45, ETH: -135.78 });
+  })
+});
