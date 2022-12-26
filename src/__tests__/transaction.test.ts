@@ -58,13 +58,37 @@ describe('getPortfolioValue', () => {
 
   it('should return the latest portfolio value in USD for the given token if a token argument is provided', () => {
     const transactions = [
-      { timestamp: 1234567890, transactionType: 'DEPOSIT', token: 'BTC', amount: 1 },
-      { timestamp: 1234567891, transactionType: 'WITHDRAWAL', token: 'ETH', amount: 2 },
+      { timestamp: 1234567890, transactionType: TransactionType.DEPOSIT, token: 'BTC', amount: 1 },
+      { timestamp: 1234567891, transactionType: TransactionType.WITHDRAWAL, token: 'ETH', amount: 2 },
     ];
     const exchangeRates = { BTC: 123.45, ETH: 67.89 };
     const portfolio = getPortfolioValue(transactions, exchangeRates, undefined, 'BTC');
     expect(portfolio).toEqual({ BTC: 123.45 });
   });
+
+  it('should filter the transactions by date if a date argument is provided', () => {
+    const transactions = [
+      { timestamp: 1234567890, transactionType: TransactionType.DEPOSIT, token: 'BTC', amount: 1 },
+      { timestamp: 1234567891, transactionType: TransactionType.WITHDRAWAL, token: 'ETH', amount: 2 },
+    ];
+    const exchangeRates = { BTC: 123.45, ETH: 67.89 };
+    const portfolio = getPortfolioValue(transactions, exchangeRates, 1234567891);
+    expect(portfolio).toEqual({ BTC: 123.45, ETH: -135.78 });
+    });
+
+    it('should filter the transactions by token and date if both token and date arguments are provided', () => {
+const transactions = [
+{ timestamp: 1234567890, transactionType: TranactionType.DEPOSIT, token: 'BTC', amount: 1 },
+{ timestamp: 1234567891, transactionType: TransactionType.WITHDRAWAL, token: 'ETH', amount: 2 },
+];
+const exchangeRates = { BTC: 123.45, ETH: 67.89 };
+const portfolio = getPortfolioValue(transactions, exchangeRates, 1234567891, 'BTC');
+expect(portfolio).toEqual({ BTC: 123.45 });
+});
+
+
+
+
 
 //   it('should filter the transactions by token if a token argument is provided', () => {
 //     const transactions = [
