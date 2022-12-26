@@ -56,6 +56,16 @@ describe('getPortfolioValue', () => {
     expect(portfolio).toEqual({ BTC: 123.45, ETH: -135.78 });
   });
 
+  it('should return the latest portfolio value in USD for the given token if a token argument is provided', () => {
+    const transactions = [
+      { timestamp: 1234567890, transactionType: 'DEPOSIT', token: 'BTC', amount: 1 },
+      { timestamp: 1234567891, transactionType: 'WITHDRAWAL', token: 'ETH', amount: 2 },
+    ];
+    const exchangeRates = { BTC: 123.45, ETH: 67.89 };
+    const portfolio = getPortfolioValue(transactions, exchangeRates, undefined, 'BTC');
+    expect(portfolio).toEqual({ BTC: 123.45 });
+  });
+
 //   it('should filter the transactions by token if a token argument is provided', () => {
 //     const transactions = [
 //       { timestamp: 1234567890, transactionType: TransactionType.DEPOSIT, token: 'BTC', amount: 1 },
