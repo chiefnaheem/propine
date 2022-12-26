@@ -5,11 +5,10 @@
   "license": "MIT",
   "index": "dist/index.js",
   "scripts": {
-    "start": "yarn build && node dist/index.js",
-    "start:dev": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "clean": "rm -rf dist && mkdir dist",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "cryptocompare": "^1.0.0",
