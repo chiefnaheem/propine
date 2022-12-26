@@ -6,3 +6,16 @@ describe('getExchangeRates', () => {
     expect(exchangeRates).toEqual({ BTC: 123.45, ETH: 67.89 });
   });
 });
+
+describe('getTransactionsFromCSV', () => {
+  it('should return an array of transactions from the given CSV string', () => {
+    const csv = `timestamp,transaction_type,token,amount
+                 1234567890,DEPOSIT,BTC,1
+                 1234567891,WITHDRAWAL,ETH,2`;
+    const transactions = getTransactionsFromCSV(csv);
+    expect(transactions).toEqual([
+      { timestamp: 1234567890, transactionType: 'DEPOSIT', token: 'BTC', amount: 1 },
+      { timestamp: 1234567891, transactionType: 'WITHDRAWAL', token: 'ETH', amount: 2 },
+    ]);
+  });
+});
