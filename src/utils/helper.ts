@@ -22,11 +22,55 @@ export async function getExchangeRates(tokens: string[]): Promise<ExchangeRate> 
 
 }
 
-export function parseTransaction(data: string[]): Transaction {
-  return {
-    timestamp: Number(data[0]),
-    transactionType: data[1] as TransactionType,
-    token: data[2],
-    amount: Number(data[3]),
-  };
-}
+const getTransactionsFromCSV = (csv: string): Transaction[] => {
+  const lines = csv.split('\n');
+  return lines
+    .slice(1) // skip the header line
+    .map((line) => {
+      const columns = line.split(',');
+      return {
+        timestamp: parseInt(columns[0], 10),
+        transactionType: columns[1] as TransactionType,
+        token: columns[2],
+        amount: parseInt(columns[3], 10),
+      };
+    });
+};
+
+const getPortfolioValue = (
+  transactions: Transaction[],
+  exchangeRates: ExchangeRate,
+  date?: number,
+  token?: string,
+): { [key: string]: number } => {
+  const portfolio: { [key: string]: number } = {};
+  transactions.forEach((transaction) => {
+    if (date && transaction.timestamp > date) {
+      // Skip transactions that occurred after the specified date
+      return;
+    }
+    if (token && transaction.token !== token) {
+      // Skip transactions that are not for the specified token
+      return;
+    }
+
+    if (!portfolio[transaction.token]) {
+      portfolio[transaction.token] = 0;
+    }
+ if (transaction.transactionType === TransactionType.DEPOSIT) {
+      portfolio[transaction.token] += transaction.amount;
+    } else if (transaction.transactionType === TransactionType.WITHDRAWAL) {
+      portfolio[transaction.token] -= transaction.amount;
+    }
+  });
+
+  // Convert the portfolio balances to USD using the exchange rates
+  Object.keys(portfolio).forEach((token) => {
+    portfolio[token] = portfolio[token] * exchangeRates[token];
+  });
+
+  return portfolio;
+};
+
+
+
