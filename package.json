@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "index": "dist/index.js",
   "scripts": {
     "start": "yarn build && node dist/index.js",
-    "compile": "yarn tsc",
+    "start:dev": "ts-node src/index.ts",
     "clean": "rm -rf dist && mkdir dist",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "dependencies": {
     "cryptocompare": "^1.0.0",
