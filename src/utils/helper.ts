@@ -9,11 +9,21 @@ export async function getExchangeRates(tokens: string[]): Promise<ExchangeRate> 
     qs: {
       fsym: tokens.join(','),
       tsyms: 'USD',
-      api_key: process.env.API_KEY
+      
     },
     json: true,
   });
-  return response;
+  
+  const rates: { [token: string]: number } = {};
+  for (const token of tokens) {
+    if (response[token] && response[token].Response === 'Error') {
+      throw new Error(response[token].Message);
+    }
+    rates[token] = response[token]?.USD ?? 0;
+  }
+
+  return rates;
+
 }
 
 export const getTransactionsFromCSV = (csv: string): Transaction[] => {
