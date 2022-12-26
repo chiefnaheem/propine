@@ -68,4 +68,16 @@ describe('getPortfolioValue', () => {
     portfolio = getPortfolioValue(transactions, exchangeRates, undefined, 'XRP');
     expect(portfolio).toEqual({});
   });
+
+  it('should return an empty object if the exchange rates are not available for a given token', () => {
+    const transactions = [
+      { timestamp: 1234567890, transactionType: 'DEPOSIT', token: 'BTC', amount: 1 },
+      { timestamp: 1234567891, transactionType: 'WITHDRAWAL', token: 'ETH', amount: 2 },
+    ];
+    const exchangeRates = { BTC: 123.45 };
+    const portfolio = getPortfolioValue(transactions, exchangeRates);
+    expect(portfolio).toEqual({});
+  });
+
+
 });
