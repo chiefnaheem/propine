@@ -4,7 +4,6 @@ import { TransactionType } from '../enums/transaction.enum';
 import { ExchangeRate, Transaction } from '../interfaces/transaction.interface';
 
 export async function getExchangeRates(tokens: string[]): Promise<ExchangeRate> {
-    try {
   const response = await request.get({
     uri: CRYPTOCOMPARE_API_URL,
     qs: {
@@ -15,14 +14,9 @@ export async function getExchangeRates(tokens: string[]): Promise<ExchangeRate> 
     json: true,
   });
   return response;
-  } catch (error: any) {
-    console.error(`Error getting exchange rate for ${tokens}: ${error.message}`);
-    
-  }
-
 }
 
-const getTransactionsFromCSV = (csv: string): Transaction[] => {
+export const getTransactionsFromCSV = (csv: string): Transaction[] => {
   const lines = csv.split('\n');
   return lines
     .slice(1) // skip the header line
@@ -37,7 +31,7 @@ const getTransactionsFromCSV = (csv: string): Transaction[] => {
     });
 };
 
-const getPortfolioValue = (
+export const getPortfolioValue = (
   transactions: Transaction[],
   exchangeRates: ExchangeRate,
   date?: number,
